@@ -12,7 +12,7 @@ Run:
   python app.py
 Then open session.html (served via Flask or a local server).
 """
-
+import os
 import base64
 import math
 import time
@@ -317,4 +317,5 @@ def handle_frame(data):
 if __name__ == "__main__":
     print("\n  Deha Flask server starting...")
     print("  Open http://localhost:5000 in your browser\n")
-    socketio.run(app, host="0.0.0.0", port=5000, debug=False)
+    port = int(os.environ.get("PORT", 5000))
+    socketio.run(app, host="0.0.0.0", port=port, debug=False)
