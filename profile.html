@@ -39,7 +39,17 @@
         </svg>
       </a></li>
     </ul>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+  <div class="nav-drawer" id="navDrawer">
+    <a href="session.html">Session</a>
+    <a href="index.html#guide">Guide</a>
+    <a href="index.html#about">About</a>
+    <a href="profile.html">Profile</a>
+  </div>
+  <div class="nav-drawer-overlay" id="navDrawerOverlay" onclick="closeDrawer()"></div>
 
   <div class="profile-page">
 
@@ -181,5 +191,20 @@
   </div>
   <script src="splash.js"></script>
   <script src="profile.js"></script>
+  <script>
+    const hamburger = document.getElementById('navHamburger');
+    const drawer = document.getElementById('navDrawer');
+    const overlay = document.getElementById('navDrawerOverlay');
+    function closeDrawer() {
+      hamburger.classList.remove('open');
+      drawer.classList.remove('open');
+      overlay.classList.remove('open');
+    }
+    hamburger.addEventListener('click', function() {
+      hamburger.classList.toggle('open');
+      drawer.classList.toggle('open');
+      overlay.classList.toggle('open');
+    });
+  </script>
 </body>
 </html>

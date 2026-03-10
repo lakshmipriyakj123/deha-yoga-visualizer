@@ -1,5 +1,6 @@
 /* ============================================================
    DEHA — SESSION PAGE JAVASCRIPT
+   (Flask + WebSocket integration)
    ============================================================ */
 
 (function () {
@@ -77,11 +78,11 @@
       sanskrit: 'Garudasana',
       tip: 'Wrap one arm under the other and one leg over the other. Sink and balance.',
       corrections: [
-        { area: 'Arms',         text: 'Wrap arms completely — lift the elbows to shoulder height', sev: 'error' },
-        { area: 'Legs',         text: 'Squeeze the thighs together and lower the hips deeper', sev: 'error' },
-        { area: 'Standing Heel',text: 'Ground through the standing heel actively', sev: 'correct' },
-        { area: 'Gaze',         text: 'Fix gaze on a single point ahead to stabilise', sev: 'error' },
-        { area: 'Spine',        text: 'Keep the spine tall — resist rounding forward', sev: 'correct' },
+        { area: 'Arms',          text: 'Wrap arms completely — lift the elbows to shoulder height', sev: 'error' },
+        { area: 'Legs',          text: 'Squeeze the thighs together and lower the hips deeper', sev: 'error' },
+        { area: 'Standing Heel', text: 'Ground through the standing heel actively', sev: 'correct' },
+        { area: 'Gaze',          text: 'Fix gaze on a single point ahead to stabilise', sev: 'error' },
+        { area: 'Spine',         text: 'Keep the spine tall — resist rounding forward', sev: 'correct' },
       ]
     },
     dancer: {
@@ -138,7 +139,7 @@
     mountain: {
       level:   'Beginner',
       image:   'assets/Palm-tut.jpg',
-      videoId: 'V_bSLebtVJs&list=LL&index=9',   // "Tadasana / Palm Tree Pose" tutorial
+      videoId: 'V_bSLebtVJs&list=LL&index=9',
       steps: [
         'Stand with feet hip-width apart, arms relaxed at your sides.',
         'Inhale and raise both arms overhead, interlocking your fingers with palms facing up.',
@@ -149,7 +150,7 @@
     warrior1: {
       level:   'Beginner',
       image:   'assets/WarriorI-tut.jpg',
-      videoId: '98h26Ayke0s&list=LL&index=8',   // Warrior I beginner tutorial
+      videoId: '98h26Ayke0s&list=LL&index=8',
       steps: [
         'Step your left foot back into a wide lunge, back heel angled at 45°.',
         'Bend the front knee to 90°, keeping it directly over the ankle.',
@@ -160,7 +161,7 @@
     warrior2: {
       level:   'Beginner',
       image:   'assets/WarriorII-tut.jpg',
-      videoId: 'YSjBJDkA6zg',   // Warrior II tutorial
+      videoId: 'YSjBJDkA6zg',
       steps: [
         'Step feet wide apart. Turn the front foot out 90° and back foot in slightly.',
         'Bend the front knee to 90° directly over the ankle.',
@@ -171,7 +172,7 @@
     tree: {
       level:   'Beginner',
       image:   'assets/Tree-tut.jpg',
-      videoId: 'sxymAjTuUx0&list=LL&index=8',   // Tree Pose tutorial
+      videoId: 'sxymAjTuUx0&list=LL&index=8',
       steps: [
         'Stand on your left leg, engage the core and find a fixed gaze point.',
         'Place the sole of your right foot on your left inner thigh (not on the knee).',
@@ -182,7 +183,7 @@
     triangle: {
       level:   'Beginner',
       image:   'assets/Triangle-tut.jpg',
-      videoId: 'Kh_tTk5_EGk&list=LL&index=3',   // Triangle Pose tutorial
+      videoId: 'Kh_tTk5_EGk&list=LL&index=3',
       steps: [
         'Stand with feet wide apart. Turn front foot out 90°, back foot in slightly.',
         'Extend arms wide at shoulder height, then hinge sideways from the hip.',
@@ -193,7 +194,7 @@
     eagle: {
       level:   'Intermediate',
       image:   'assets/Eagle-tut.jpg',
-      videoId: 'Sq8o6BBi9uE&list=LL&index=4',   // Eagle Pose tutorial
+      videoId: 'Sq8o6BBi9uE&list=LL&index=4',
       steps: [
         'Bend both knees slightly. Wrap the right leg over the left, hooking foot behind calf.',
         'Wrap right arm under left, lifting elbows to shoulder height.',
@@ -204,7 +205,7 @@
     dancer: {
       level:   'Intermediate',
       image:   'assets/Dancer-tut.jpg',
-      videoId: '2HJvzYzjaP0&list=LL&index=6',   // Dancer's Pose tutorial
+      videoId: '2HJvzYzjaP0&list=LL&index=6',
       steps: [
         'Stand on your left leg, reach back and hold your right ankle or foot.',
         'Kick the foot actively into your hand to create the backbend.',
@@ -215,7 +216,7 @@
     child: {
       level:   'Beginner',
       image:   'assets/Child-tut.jpg',
-      videoId: 'nMp3MlTz9fA&list=LL&index=7',   // Child's Pose tutorial
+      videoId: 'nMp3MlTz9fA&list=LL&index=7',
       steps: [
         'Kneel on the mat with big toes together, knees wide apart.',
         'Sink your hips back toward your heels and fold your torso forward.',
@@ -226,7 +227,7 @@
     lotus: {
       level:   'Intermediate',
       image:   'assets/Lotus-tut.jpg',
-      videoId: 'ddnFSRprsdg&list=LL&index=2',   // Lotus Pose tutorial
+      videoId: 'ddnFSRprsdg&list=LL&index=2',
       steps: [
         'Sit cross-legged and place your right foot on your left thigh.',
         'Then place your left foot on your right thigh, sole facing upward.',
@@ -237,7 +238,7 @@
     seated: {
       level:   'Beginner',
       image:   'assets/Forward-tut.jpg',
-      videoId: 'T8sgVyF4Ux4&list=LL&index=5',   // Seated Forward Fold tutorial
+      videoId: 'T8sgVyF4Ux4&list=LL&index=5',
       steps: [
         'Sit with both legs extended straight in front, feet flexed.',
         'Inhale and lengthen the spine upward — grow as tall as possible.',
@@ -246,8 +247,6 @@
       ]
     },
   };
-
-
 
   /* ── State ── */
   let sessionActive  = false;
@@ -262,31 +261,35 @@
   let scoreHistory   = [];
   let correctionLog  = {};
   let posesPracticed = [];
-  let allScores      = {};   // scores per pose
-  let skipTutorial_  = false; // skip tutorial checkbox state
+  let allScores      = {};
+  let skipTutorial_  = false;
+
+  /* ── WebSocket state ── */
+  let socket     = null;
+  let frameTimer = null;
 
   /* ── DOM refs ── */
-  const nameInput       = document.getElementById('nameInput');
-  const nameConfirmed   = document.getElementById('nameConfirmed');
-  const nameDisplay     = document.getElementById('nameDisplay');
-  const poseSelect      = document.getElementById('poseSelect');
-  const poseBrief       = document.getElementById('poseBrief');
-  const poseBriefName   = document.getElementById('poseBriefName');
-  const poseBriefTip    = document.getElementById('poseBriefTip');
-  const btnStart        = document.getElementById('btnStart');
-  const startNote       = document.querySelector('.start-note');
-  const ctrlPanel       = document.getElementById('ctrlPanel');
-  const feedbackPanel   = document.getElementById('feedbackPanel');
-  const summaryPanel    = document.getElementById('summaryPanel');
+  const nameInput         = document.getElementById('nameInput');
+  const nameConfirmed     = document.getElementById('nameConfirmed');
+  const nameDisplay       = document.getElementById('nameDisplay');
+  const poseSelect        = document.getElementById('poseSelect');
+  const poseBrief         = document.getElementById('poseBrief');
+  const poseBriefName     = document.getElementById('poseBriefName');
+  const poseBriefTip      = document.getElementById('poseBriefTip');
+  const btnStart          = document.getElementById('btnStart');
+  const startNote         = document.querySelector('.start-note');
+  const ctrlPanel         = document.getElementById('ctrlPanel');
+  const feedbackPanel     = document.getElementById('feedbackPanel');
+  const summaryPanel      = document.getElementById('summaryPanel');
   const cameraPlaceholder = document.getElementById('cameraPlaceholder');
-  const cameraLive      = document.getElementById('cameraLive');
-  const videoEl         = document.getElementById('videoEl');
-  const skeletonCanvas  = document.getElementById('skeletonCanvas');
-  const stopModal       = document.getElementById('stopModal');
-  const statusDot       = document.getElementById('statusDot');
-  const statusText      = document.getElementById('statusText');
-  const fpiName         = document.getElementById('fpiName');
-  const scorePill       = document.getElementById('scorePill');
+  const cameraLive        = document.getElementById('cameraLive');
+  const videoEl           = document.getElementById('videoEl');
+  const skeletonCanvas    = document.getElementById('skeletonCanvas');
+  const stopModal         = document.getElementById('stopModal');
+  const statusDot         = document.getElementById('statusDot');
+  const statusText        = document.getElementById('statusText');
+  const fpiName           = document.getElementById('fpiName');
+  const scorePill         = document.getElementById('scorePill');
 
   /* ── Pose change ── */
   window.onPoseChange = function () {
@@ -308,19 +311,14 @@
   /* ── Start Session ── */
   window.startSession = async function () {
     if (!selectedPose) return;
-
     const user = localStorage.getItem('deha_current_user');
     if (!user) {
       const startNote = document.querySelector('.start-note');
       startNote.innerHTML = 'Please <a href="auth.html" style="color:var(--gold);font-weight:600;">sign in</a> or <a href="auth.html" style="color:var(--gold);font-weight:600;">create an account</a> to begin.';
       return;
     }
-
-    // Show tutorial popup instead of starting camera directly
     openTutorial();
   };
-
-
 
   /* ── Stop modal ── */
   window.openStopModal  = () => stopModal.classList.add('open');
@@ -333,36 +331,31 @@
 
   /* ── End session ── */
   function endSession() {
-    // Stop camera
+    stopFrameLoop();
+    if (socket) { socket.disconnect(); socket = null; }
+
     if (videoStream) {
       videoStream.getTracks().forEach(t => t.stop());
       videoStream = null;
     }
     videoEl.srcObject = null;
 
-    // Clear intervals
-    clearInterval(feedbackTimer);
-    clearInterval(scoreTimer);
     clearInterval(sessionClock);
     sessionActive = false;
 
-    // Clear skeleton
     const ctx = skeletonCanvas.getContext('2d');
     ctx.clearRect(0, 0, skeletonCanvas.width, skeletonCanvas.height);
     window.removeEventListener('resize', resizeCanvas);
 
-    // Status
     statusDot.classList.remove('live');
     statusText.textContent = 'Ended';
 
-    // Hide camera, show placeholder end state
     cameraLive.style.display = 'none';
     cameraPlaceholder.style.display = 'flex';
     cameraPlaceholder.querySelector('.ph-title').textContent = 'Session ended';
     cameraPlaceholder.querySelector('.ph-desc').textContent =
       'Your summary is shown on the right. Start a new session when ready.';
 
-    // Swap panels
     feedbackPanel.style.display = 'none';
     summaryPanel.style.display  = 'block';
 
@@ -371,12 +364,10 @@
 
   /* ── Build summary ── */
   function buildSummary() {
-    // Save final pose score
     allScores[selectedPose] = scoreHistory.length
       ? Math.round(scoreHistory.reduce((a, b) => a + b, 0) / scoreHistory.length)
       : Math.round(currentScore);
 
-    // Average across all poses
     const allScoreValues = Object.values(allScores);
     const avg = allScoreValues.length
       ? Math.round(allScoreValues.reduce((a, b) => a + b, 0) / allScoreValues.length)
@@ -390,7 +381,6 @@
 
     const pose = POSES[selectedPose];
 
-    // Most corrected area
     let topArea = null, topCount = 0;
     Object.entries(correctionLog).forEach(([area, count]) => {
       if (count > topCount) { topArea = area; topCount = count; }
@@ -418,7 +408,7 @@
     document.getElementById('sumHighlight').textContent = hlText;
   }
 
-  /* ── Reset (new session) ── */
+  /* ── Reset ── */
   window.resetSession = function () {
     summaryPanel.style.display = 'none';
     ctrlPanel.style.display    = 'block';
@@ -432,9 +422,9 @@
     poseBrief.style.display = 'none';
     btnStart.disabled = true;
     startNote.textContent = 'Select a pose above to begin';
-    nameInput.value = '';
-    nameConfirmed.style.display = 'none';
-    confirmedName = '';
+    if (nameInput) nameInput.value = '';
+    if (nameConfirmed) nameConfirmed.style.display = 'none';
+    confirmedName  = '';
     selectedPose   = '';
     posesPracticed = [];
     allScores      = {};
@@ -461,7 +451,6 @@
     if (key === selectedPose) return;
     window._pendingPose = key;
     if (skipTutorial_) {
-      // Skip popup, switch directly
       closeTutorialAndStart();
     } else {
       openTutorial(key);
@@ -474,54 +463,68 @@
     });
   }
 
-  /* ── Feedback loop ── */
-  function startFeedbackLoop() {
-    updateFeedback();
-    feedbackTimer = setInterval(updateFeedback, 3600);
+  /* ── Canvas resize ── */
+  function resizeCanvas() {
+    skeletonCanvas.width  = cameraLive.offsetWidth;
+    skeletonCanvas.height = cameraLive.offsetHeight;
   }
 
-  function updateFeedback() {
-    const pool = POSES[selectedPose]?.corrections || [];
-    if (!pool.length) return;
+  /* ════════════════════════════════════════
+     WEBSOCKET + FRAME CAPTURE
+  ════════════════════════════════════════ */
 
-    const shuffled = [...pool].sort(() => Math.random() - 0.5).slice(0, 3);
+  function connectSocket() {
+    socket = io('http://localhost:5000');
 
-    shuffled.forEach(c => {
-      if (c.sev === 'error') {
-        correctionLog[c.area] = (correctionLog[c.area] || 0) + 1;
-      }
+    socket.on('connect', () => {
+      console.log('[Deha] Connected to Flask backend');
     });
 
-    ['slot0', 'slot1', 'slot2'].forEach((id, i) => {
-      const el = document.getElementById(id);
-      const c  = shuffled[i];
-      if (!c) {
-        el.className = 'feedback-slot empty';
-        el.innerHTML = '';
-        return;
-      }
-      el.className = `feedback-slot ${c.sev}`;
-      el.innerHTML = `
-        <div class="slot-dot"></div>
-        <div>
-          <div class="slot-area">${c.area}</div>
-          <div class="slot-text">${c.text}</div>
-        </div>
-      `;
+    socket.on('feedback', (data) => {
+      if (!sessionActive) return;
+      applyFeedback(data);
+    });
+
+    socket.on('disconnect', () => {
+      console.warn('[Deha] Lost connection to backend');
+    });
+
+    socket.on('connect_error', (err) => {
+      console.error('[Deha] Connection error:', err.message);
     });
   }
 
-  /* ── Score loop ── */
-  function startScoreLoop() {
-    updateScore();
-    scoreTimer = setInterval(updateScore, 2800);
+  function startFrameLoop() {
+    if (frameTimer) clearInterval(frameTimer);
+    frameTimer = setInterval(sendFrame, 150); // ~6-7 fps
   }
 
-  function updateScore() {
-    const delta = (Math.random() - 0.45) * 14;
-    currentScore = Math.max(36, Math.min(97, currentScore + delta));
-    const s = Math.round(currentScore);
-    scoreHistory.push(s);
+  function stopFrameLoop() {
+    if (frameTimer) { clearInterval(frameTimer); frameTimer = null; }
+  }
+
+  function sendFrame() {
+    if (!sessionActive || !socket || !videoEl.srcObject) return;
+    const tmpCanvas = document.createElement('canvas');
+    tmpCanvas.width  = 320;
+    tmpCanvas.height = 240;
+    tmpCanvas.getContext('2d').drawImage(videoEl, 0, 0, 320, 240);
+    const b64 = tmpCanvas.toDataURL('image/jpeg', 0.7);
+    socket.emit('frame', { pose: selectedPose, frame: b64 });
+  }
+
+  /* ════════════════════════════════════════
+     APPLY REAL FEEDBACK FROM FLASK
+  ════════════════════════════════════════ */
+
+  function applyFeedback(data) {
+    const feedback = data.feedback || [];
+    const score    = data.score ?? 0;
+    const detected = data.detected ?? false;
+
+    currentScore = score;
+    scoreHistory.push(score);
+    const s = score;
 
     if (s >= 80) {
       scorePill.textContent = s + '% — Good';
@@ -539,83 +542,114 @@
       scorePill.style.borderColor = 'rgba(200,80,80,0.30)';
       scorePill.style.background  = 'rgba(200,80,80,0.10)';
     }
+
+    if (!detected) {
+      document.getElementById('slot0').className = 'feedback-slot empty';
+      document.getElementById('slot0').innerHTML = '<div class="slot-empty-text">Move into frame — body not detected</div>';
+      document.getElementById('slot1').className = 'feedback-slot empty';
+      document.getElementById('slot1').innerHTML = '';
+      document.getElementById('slot2').className = 'feedback-slot empty';
+      document.getElementById('slot2').innerHTML = '';
+      return;
+    }
+
+    if (feedback.length === 0) {
+      document.getElementById('slot0').className = 'feedback-slot correct';
+      document.getElementById('slot0').innerHTML = `
+        <div class="slot-dot"></div>
+        <div><div class="slot-area">Form</div><div class="slot-text">Form looks good — hold it!</div></div>`;
+      document.getElementById('slot1').className = 'feedback-slot empty';
+      document.getElementById('slot1').innerHTML = '';
+      document.getElementById('slot2').className = 'feedback-slot empty';
+      document.getElementById('slot2').innerHTML = '';
+    } else {
+      feedback.forEach(() => {
+        correctionLog['Pose'] = (correctionLog['Pose'] || 0) + 1;
+      });
+
+      ['slot0', 'slot1', 'slot2'].forEach((id, i) => {
+        const el  = document.getElementById(id);
+        const msg = feedback[i];
+        if (!msg) {
+          el.className = 'feedback-slot empty';
+          el.innerHTML = '';
+          return;
+        }
+        el.className = 'feedback-slot error';
+        el.innerHTML = `
+          <div class="slot-dot"></div>
+          <div><div class="slot-area">Correction</div><div class="slot-text">${msg}</div></div>`;
+      });
+    }
+
+    drawRealSkeleton(data.landmarks || [], data.joint_status || {}, data.connections || []);
   }
 
-  /* ── Skeleton canvas ── */
-  function resizeCanvas() {
-    skeletonCanvas.width  = cameraLive.offsetWidth;
-    skeletonCanvas.height = cameraLive.offsetHeight;
-  }
+  /* ════════════════════════════════════════
+     DRAW REAL SKELETON
+  ════════════════════════════════════════ */
 
-  const ERROR_JOINTS = new Set(['lHip', 'rHip', 'lKnee']);
+  const LANDMARK_NAME_TO_IDX = {
+    l_shoulder: 11, r_shoulder: 12,
+    l_elbow: 13,    r_elbow: 14,
+    l_wrist: 15,    r_wrist: 16,
+    l_hip: 23,      r_hip: 24,
+    l_knee: 25,     r_knee: 26,
+    l_ankle: 27,    r_ankle: 28,
+    l_heel: 29,     r_heel: 30,
+    l_foot: 31,     r_foot: 32,
+  };
 
-  function drawSkeletonLoop() {
-    if (!sessionActive) return;
-
+  function drawRealSkeleton(landmarks, jointStatus, connections) {
     const canvas = skeletonCanvas;
     const ctx    = canvas.getContext('2d');
     const W = canvas.width, H = canvas.height;
     ctx.clearRect(0, 0, W, H);
+    if (!landmarks.length) return;
 
-    const t = Date.now() / 1000;
-    const sway = Math.sin(t * 0.35) * 0.014;
-    const bob  = Math.sin(t * 0.55) * 0.007;
+    const px = (lm) => [lm.x * W, lm.y * H];
 
-    const J = {
-      nose:      [0.50 + sway, 0.11 + bob],
-      lShoulder: [0.38 + sway, 0.24 + bob],
-      rShoulder: [0.62 + sway, 0.24 + bob],
-      lElbow:    [0.30 + sway, 0.36],
-      rElbow:    [0.70 + sway, 0.36],
-      lWrist:    [0.24 + sway, 0.49],
-      rWrist:    [0.76 + sway, 0.49],
-      lHip:      [0.42 + sway, 0.50 + bob],
-      rHip:      [0.58 + sway, 0.50 + bob],
-      lKnee:     [0.40 + sway, 0.67],
-      rKnee:     [0.60 + sway, 0.67],
-      lAnkle:    [0.40 + sway, 0.84],
-      rAnkle:    [0.60 + sway, 0.84],
-    };
-
-    const CONNECTIONS = [
-      ['lShoulder','rShoulder'],
-      ['lShoulder','lElbow'],['lElbow','lWrist'],
-      ['rShoulder','rElbow'],['rElbow','rWrist'],
-      ['lShoulder','lHip'],['rShoulder','rHip'],
-      ['lHip','rHip'],
-      ['lHip','lKnee'],['lKnee','lAnkle'],
-      ['rHip','rKnee'],['rKnee','rAnkle'],
-    ];
-
-    const px = (key) => [J[key][0] * W, J[key][1] * H];
-
-    CONNECTIONS.forEach(([a, b]) => {
-      const errA = ERROR_JOINTS.has(a);
-      const errB = ERROR_JOINTS.has(b);
+    connections.forEach(([a, b]) => {
+      const ia = LANDMARK_NAME_TO_IDX[a];
+      const ib = LANDMARK_NAME_TO_IDX[b];
+      if (ia === undefined || ib === undefined) return;
+      const okA = jointStatus[a] !== false;
+      const okB = jointStatus[b] !== false;
+      const [x1, y1] = px(landmarks[ia]);
+      const [x2, y2] = px(landmarks[ib]);
       ctx.beginPath();
-      ctx.moveTo(...px(a));
-      ctx.lineTo(...px(b));
-      ctx.strokeStyle = (errA || errB)
-        ? 'rgba(200,80,80,0.65)'
-        : 'rgba(80,160,110,0.60)';
-      ctx.lineWidth   = 2.4;
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.strokeStyle = (okA && okB) ? 'rgba(80,200,120,0.75)' : 'rgba(200,80,80,0.75)';
+      ctx.lineWidth   = 2.8;
       ctx.lineCap     = 'round';
       ctx.stroke();
     });
 
-    Object.keys(J).forEach(key => {
-      const [x, y] = px(key);
-      const isErr  = ERROR_JOINTS.has(key);
+    const visibleIdx = [11,12,13,14,15,16,23,24,25,26,27,28];
+    const idxToName  = {
+      11:'l_shoulder', 12:'r_shoulder',
+      13:'l_elbow',    14:'r_elbow',
+      15:'l_wrist',    16:'r_wrist',
+      23:'l_hip',      24:'r_hip',
+      25:'l_knee',     26:'r_knee',
+      27:'l_ankle',    28:'r_ankle',
+    };
+
+    visibleIdx.forEach(i => {
+      const lm = landmarks[i];
+      if (!lm) return;
+      const [x, y] = px(lm);
+      const name   = idxToName[i];
+      const ok     = jointStatus[name] !== false;
       ctx.beginPath();
-      ctx.arc(x, y, 5.5, 0, Math.PI * 2);
-      ctx.fillStyle   = isErr ? 'rgba(217,83,79,0.88)' : 'rgba(80,160,110,0.88)';
+      ctx.arc(x, y, 6, 0, Math.PI * 2);
+      ctx.fillStyle   = ok ? 'rgba(80,200,120,0.90)' : 'rgba(210,80,80,0.90)';
       ctx.fill();
-      ctx.strokeStyle = isErr ? 'rgba(217,83,79,0.25)' : 'rgba(80,160,110,0.25)';
-      ctx.lineWidth   = 3.5;
+      ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+      ctx.lineWidth   = 1.5;
       ctx.stroke();
     });
-
-    requestAnimationFrame(drawSkeletonLoop);
   }
 
   /* ── Tutorial popup ── */
@@ -640,7 +674,7 @@
     list.innerHTML = tut.steps.map(s => `<li>${s}</li>`).join('');
 
     document.getElementById('tutModal').classList.add('open');
-  }
+  };
 
   window.skipTutorial = function () {
     closeTutorialAndStart();
@@ -655,13 +689,11 @@
     modal.classList.remove('open');
     document.getElementById('tutVideoThumb').src = '';
 
-    // Save checkbox state
     const cb = document.getElementById('skipTutCheck');
     if (cb) skipTutorial_ = cb.checked;
 
-    // Mid-session pose switch — no camera request needed
+    // Mid-session pose switch
     if (sessionActive && window._pendingPose) {
-      // Save current pose score before switching
       allScores[selectedPose] = scoreHistory.length
         ? Math.round(scoreHistory.reduce((a, b) => a + b, 0) / scoreHistory.length)
         : Math.round(currentScore);
@@ -674,17 +706,13 @@
       fpiName.textContent = POSES[selectedPose].name;
       currentScore  = 72;
       scoreHistory  = [];
-      clearInterval(feedbackTimer);
-      clearInterval(scoreTimer);
-      startFeedbackLoop();
-      startScoreLoop();
       updatePosePills();
       return;
     }
 
     window._pendingPose = null;
 
-    // Fresh session start — request camera only once
+    // Fresh session start
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } }
@@ -725,9 +753,10 @@
       skipTutorial_  = false;
 
       sessionClock = setInterval(() => sessionSecs++, 1000);
-      startFeedbackLoop();
-      startScoreLoop();
-      drawSkeletonLoop();
+
+      // Connect to Flask and start sending frames
+      connectSocket();
+      startFrameLoop();
       buildPoseSwitcher();
 
     } catch (err) {
