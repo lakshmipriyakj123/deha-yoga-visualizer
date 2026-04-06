@@ -189,7 +189,11 @@
   width: 100%; height: 100%;
   object-fit: cover;
   display: block;
+<<<<<<< HEAD
   transform:scaleX(-1);
+=======
+  transform: scaleX(-1);
+>>>>>>> cb11dce5c7ac5fbf47a567f117694aea5be2fc84
 }
 
 #skeletonCanvas {
